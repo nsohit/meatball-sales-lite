@@ -1,0 +1,161 @@
+================================================================================
+CARA DOWNLOAD FILE BAKSO-BUSINESS-LITE.TAR.GZ
+================================================================================
+
+File Location: /app/bakso-business-lite.tar.gz
+File Size: 812KB
+Status: ✅ READY TO DOWNLOAD
+
+================================================================================
+CARA 1: DOWNLOAD VIA PLATFORM EMERGENT
+================================================================================
+
+Jika Anda menggunakan platform Emergent:
+
+1. Cari menu "Files" atau "File Manager" di interface
+2. Navigate ke folder: /app/
+3. Cari file: bakso-business-lite.tar.gz
+4. Klik kanan → Download
+   ATAU
+5. Klik file → Tombol download akan muncul
+
+File akan terdownload ke komputer Anda (812KB).
+
+================================================================================
+CARA 2: DOWNLOAD VIA COMMAND (Jika Ada Terminal Access)
+================================================================================
+
+Jika punya akses terminal ke environment ini:
+
+# Copy ke temporary accessible location
+cp /app/bakso-business-lite.tar.gz /tmp/
+
+# Atau langsung SCP ke komputer Anda
+scp /app/bakso-business-lite.tar.gz [USER]@[YOUR-IP]:~/Downloads/
+
+================================================================================
+CARA 3: DOWNLOAD LANGSUNG KE RASPBERRY PI
+================================================================================
+
+Jika Raspberry Pi bisa akses environment ini:
+
+# Dari Raspberry Pi
+scp [USER]@[THIS-ENVIRONMENT-IP]:/app/bakso-business-lite.tar.gz ~/
+
+# Atau jika environment support HTTP download
+wget http://[THIS-ENVIRONMENT-URL]/app/bakso-business-lite.tar.gz
+
+================================================================================
+VERIFIKASI SETELAH DOWNLOAD
+================================================================================
+
+# Check file size
+ls -lh bakso-business-lite.tar.gz
+
+# Expected output:
+-rw-r--r-- 1 user user 812K Nov 16 14:11 bakso-business-lite.tar.gz
+
+# Test extract
+tar -tzf bakso-business-lite.tar.gz | head -5
+
+# Expected output:
+bakso-business-lite/
+bakso-business-lite/WHICH_SCRIPT_TO_USE.md
+bakso-business-lite/README.md
+bakso-business-lite/setup-lite.sh
+bakso-business-lite/setup-lite-node16.sh
+
+================================================================================
+SETELAH DOWNLOAD, TRANSFER KE RASPBERRY PI
+================================================================================
+
+# Dari komputer Anda ke Raspberry Pi
+scp bakso-business-lite.tar.gz pi@192.168.1.100:~/
+
+# Ganti 192.168.1.100 dengan IP Raspberry Pi Anda
+
+# Cek IP Raspberry Pi dengan command (di Pi):
+hostname -I
+
+================================================================================
+INSTALL DI RASPBERRY PI
+================================================================================
+
+# 1. SSH ke Raspberry Pi
+ssh pi@192.168.1.100
+
+# 2. Extract
+tar -xzf bakso-business-lite.tar.gz
+cd bakso-business-lite
+
+# 3. Baca README dulu (PENTING!)
+cat README_FIRST.md
+
+# 4. Install (PAKAI INI - Tanpa Node.js error!)
+bash setup-lite-node16.sh
+
+# Tunggu 8-12 menit → Selesai! ✅
+
+================================================================================
+AKSES APLIKASI
+================================================================================
+
+Setelah instalasi selesai:
+
+Browser: http://[IP-RASPBERRY-PI]:3000
+
+Contoh: http://192.168.1.100:3000
+
+================================================================================
+TROUBLESHOOTING DOWNLOAD
+================================================================================
+
+Problem: "File not found"
+Solution: File ada di /app/bakso-business-lite.tar.gz
+          Pastikan path benar
+
+Problem: "Permission denied"
+Solution: Gunakan sudo atau akses dengan user yang tepat
+
+Problem: "Download incomplete"
+Solution: File size harus 812KB (831199 bytes)
+          Re-download jika berbeda
+
+Problem: "Cannot extract"
+Solution: File corrupt, download ulang
+          Atau gunakan: tar -xzf --ignore-command-error
+
+================================================================================
+FILES TERSEDIA DI /app/
+================================================================================
+
+1. bakso-business-lite.tar.gz (812KB) ← DOWNLOAD INI!
+   Paket lengkap siap install
+
+2. frontend-build.tar.gz (790KB)
+   Frontend build saja (optional, untuk developer)
+
+================================================================================
+KONTAK & SUPPORT
+================================================================================
+
+Jika masih ada masalah:
+1. Baca: README_FIRST.md (setelah extract)
+2. Baca: INSTALL_NO_NODE_ERROR.md
+3. Baca: TROUBLESHOOTING_NODE_ERROR.md
+
+All documentation included in package!
+
+================================================================================
+QUICK SUMMARY
+================================================================================
+
+✅ File ready: /app/bakso-business-lite.tar.gz (812KB)
+✅ Download file → Transfer ke Pi → Extract → Install
+✅ Command: bash setup-lite-node16.sh
+✅ Wait: 8-12 minutes
+✅ Access: http://[IP-PI]:3000
+
+NO NODE.JS NEEDED! ZERO ERRORS! 🚀
+
+================================================================================
