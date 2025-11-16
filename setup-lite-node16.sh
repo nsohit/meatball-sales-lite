@@ -141,44 +141,42 @@ cd ..
 log_success "Backend setup complete"
 
 # ============================================
-# Step 5: Setup Frontend (Pre-built)
+# Step 5: Setup Frontend (Pre-built - NO NODE!)
 # ============================================
-log_info "Step 5/8: Setting up frontend..."
+log_info "Step 5/8: Setting up frontend (static files only)..."
 
-cd frontend
+# IMPORTANT: We don't cd into frontend folder to avoid triggering any Node processes
+# Frontend is 100% pre-built static files, no setup needed!
 
 # Check if build exists
-if [ ! -d "build" ]; then
+if [ ! -d "frontend/build" ]; then
     log_warning "Pre-built frontend not found in frontend/build/"
     
-    # Check if tarball exists in parent directory
-    if [ -f "../frontend-build.tar.gz" ]; then
-        log_info "Found frontend-build.tar.gz, extracting..."
-        tar -xzf ../frontend-build.tar.gz
-        log_success "Frontend extracted from tarball"
+    # Check if tarball exists
+    if [ -f "frontend-build.tar.gz" ]; then
+        log_info "Extracting pre-built frontend..."
+        # Extract directly to frontend folder without entering it
+        mkdir -p frontend
+        tar -xzf frontend-build.tar.gz -C frontend/
+        log_success "Frontend extracted (100% static, no Node needed!)"
     else
         log_error "Pre-built frontend not found!"
-        log_error "This lite version requires pre-built frontend."
+        log_error "File 'frontend-build.tar.gz' harus ada di folder ini"
         echo ""
-        log_info "Solusi:"
-        log_info "1. Pastikan file 'frontend-build.tar.gz' ada di folder root"
-        log_info "   ATAU"
-        log_info "2. Pastikan folder 'frontend/build/' sudah ada"
+        log_info "Pastikan paket lite sudah lengkap dengan frontend-build.tar.gz"
         exit 1
     fi
 else
-    log_success "Frontend build found"
+    log_success "Frontend build found (already extracted)"
 fi
 
-# Create .env for frontend if not exists
-if [ ! -f .env ]; then
-    cat > .env << 'EOF'
-REACT_APP_BACKEND_URL=http://localhost:8001
-EOF
-    log_success "Frontend .env created"
+# Verify build directory has content
+if [ ! -f "frontend/build/index.html" ]; then
+    log_error "Frontend build tidak lengkap (index.html missing)"
+    exit 1
 fi
 
-cd ..
+log_success "Frontend ready (Python HTTP server will serve it)"
 
 # ============================================
 # Step 6: Install Supervisor (for process management)
