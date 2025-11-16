@@ -191,12 +191,23 @@ cd ..
 log_info "Step 6/10: Installing Node.js..."
 
 if ! command -v node &> /dev/null; then
-    log_info "Downloading Node.js 16..."
-    curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - > /dev/null 2>&1
+    log_info "Downloading Node.js 18 LTS..."
+    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - > /dev/null 2>&1
     sudo apt install -y nodejs > /dev/null 2>&1
+    log_success "Node.js $(node --version) installed"
+else
+    NODE_VERSION=$(node --version | cut -d'v' -f2 | cut -d'.' -f1)
+    log_info "Node.js $(node --version) already installed"
+    
+    if [ $NODE_VERSION -lt 18 ]; then
+        log_warning "Node.js version is older than 18, upgrading..."
+        curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - > /dev/null 2>&1
+        sudo apt install -y --only-upgrade nodejs > /dev/null 2>&1
+        log_success "Node.js upgraded to $(node --version)"
+    else
+        log_success "Node.js version is compatible"
+    fi
 fi
-
-log_success "Node.js $(node --version) installed"
 
 # ============================================
 # Step 7: Install serve & PM2
