@@ -301,8 +301,18 @@ agent_communication:
       - ✅ Package structure: Verified
       - ⏳ Actual Pi 3B installation: Needs user testing
       
+      **Update: Node.js Error Fixed**
+      User melaporkan error "react-hook-form requires Node >=18.0.0 Got 16.20.2"
+      
+      **Solusi yang diimplementasikan:**
+      1. ✅ Update setup-lite.sh untuk auto-upgrade Node ke v18
+      2. ✅ Buat setup-lite-node16.sh (alternatif tanpa Node.js!)
+      3. ✅ Dokumentasi lengkap: TROUBLESHOOTING_NODE_ERROR.md
+      4. ✅ Update QUICK_START_LITE.md dengan 2 opsi
+      5. ✅ Rebuild package dengan fixes
+      
       **Next Steps:**
-      1. User perlu test instalasi di actual Raspberry Pi 3B
-      2. Verify memory usage < 500MB
+      1. User test dengan salah satu script (recommend: node16 untuk Pi 3B)
+      2. Verify instalasi berhasil tanpa error
       3. Test semua fitur berfungsi normal
-      4. Report any issues untuk improvement
+      4. Collect feedback untuk improvement
