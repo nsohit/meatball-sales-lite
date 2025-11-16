@@ -1,0 +1,81 @@
+<analysis>
+The trajectory details the development of a Bakso Business System from scratch. The user, a business owner, initially requested a Flask application for a Raspberry Pi. I, the AI engineer, clarified that the available stack is FastAPI, React, and MongoDB, and received approval to proceed. The user's primary language is Indonesian, so all future interactions must be in Indonesian.
+
+The development process was highly iterative. The initial version was a transaction-based sales tracker. Based on user feedback and a provided image, the application was completely redesigned to a stock-first model, where sales are calculated from the difference between initial and remaining daily stock.
+
+Further iterations added significant features:
+1.  **Stock Management:** CRUD operations for daily stock, including an edit functionality.
+2.  **Complex Transactions:** A separate page to handle sales of predefined packages with custom, add-on condiments that have tiered pricing.
+3.  **Financials:** Tracking of unexpected expenses and automated calculation of daily revenue, costs, net profit, and employee bonuses.
+4.  **Reporting:** Data export to Excel for daily, monthly, and stock reports.
+5.  **Deployment:** Extensive documentation and configuration adjustments for deployment on low-resource Raspberry Pi devices, including addressing Node.js version incompatibilities and memory limitations.
+
+The final request, which is the current task, is to create a lite version for a Raspberry Pi 3B that can be installed with a single  script to avoid memory issues during on-device compilation.
+</analysis>
+
+<product_requirements>
+The goal is to build a full-stack web application to manage the daily operations of a bakso (meatball) business. The system must run on a Raspberry Pi.
+
+**Core Features Implemented:**
+- **Stock-First Workflow:** The primary data entry method is through a Stock Management page. The user inputs the initial stock at the start of the day and the remaining stock at the end. The system automatically calculates items sold and the corresponding revenue.
+- **Stock Editing:** Users can view and edit previously entered initial and remaining stock data.
+- **Complex Sales Transactions:** A dedicated page allows for recording sales of predefined packages, with the ability to add extra condiments (e.g., bakso kecil, tahu). These condiments have specific, non-linear pricing tiers (e.g., 1 for Rp 2000, 2 for Rp 3000, 4 for Rp 5000).
+- **Financial Dashboard:** Automatically calculates and displays daily summaries, including total revenue, production costs, fixed costs (rent, salaries), net profit, and employee bonuses based on a specified formula.
+- **Expense Tracking:** A feature to log unexpected expenses, which are factored into the daily profit calculation.
+- **Data Export:** Functionality to export daily summaries, monthly reports, and stock data to Excel files.
+
+**Deployment Requirement:** The application must be deployable on a memory-constrained Raspberry Pi 3B. This led to a final requirement for a lite installation package that uses a single setup script to avoid on-device compilation and memory exhaustion.
+</product_requirements>
+
+<key_technical_concepts>
+- **Backend:** FastAPI (Python)
+- **Frontend:** React.js
+- **Database:** MongoDB
+- **Data Modeling:** Pydantic for data validation and serialization in the backend.
+- **Excel Export:**  library for generating  files.
+- **Deployment Target:** Raspberry Pi (specifically 3B), requiring optimizations for low-memory environments and Node.js version compatibility management.
+- **API Testing:**  for backend endpoint verification.
+</key_technical_concepts>
+
+<code_architecture>
+The application follows a standard monolithic full-stack architecture with a separate frontend and backend.
+
+**Directory Structure:**
+
+
+**File Details:**
+
+- ****
+  - **Importance:** This is the heart of the backend. It defines the entire FastAPI application, including all API endpoints, Pydantic models for data structures (Stock, Transactions, Expenses), and the business logic for all calculations (profit, bonus, stock difference) and the Excel export functionality.
+  - **Changes:** This file has been extensively modified. It started with simple transaction endpoints, was rewritten to support a stock-based calculation model, and then augmented with new endpoints for editing stock, handling complex condiment transactions, managing expenses, and exporting data.
+
+- ****
+  - **Importance:** This file contains the entire React frontend. It manages routing and state, and renders all UI components for the various pages: Dashboard, Stock Management, Transaction Page, Reports, and Expense Tracking.
+  - **Changes:** This file underwent major refactoring. It initially had a simple transaction form, was simplified to just a stock management UI, and then had a new, complex transaction page and an expense page added. It also includes the logic for switching between view and edit modes for stock, and handlers for triggering Excel downloads.
+
+- ** & **
+  - **Importance:** These files represent the current work. They are intended to provide a simplified, memory-safe installation process for a Raspberry Pi 3B. The script is designed to set up the backend and serve a pre-built version of the frontend, bypassing the need for  on the device.
+  - **Changes:** These files were newly created in response to the user's report of out-of-memory errors during installation. The work on them is still in progress.
+
+- ** & **
+  - **Importance:** These were created to solve a specific dependency conflict () when using Node.js 16 on the Raspberry Pi.  contains a list of downgraded, compatible dependencies, and the markdown file explains how to use it.
+  - **Changes:** These files were created to provide a backward-compatible path for the user.  was updated to include more conservative dependency versions to ensure stability.
+</code_architecture>
+
+<pending_tasks>
+- Complete the lite installation package for the Raspberry Pi 3B. This involves:
+  1.  Generating a pre-built static version of the React frontend.
+  2.  Finalizing the  script to automate the entire installation: setting up Python dependencies, configuring MongoDB, and serving the pre-built frontend.
+</pending_tasks>
+
+<current_work>
+Immediately before this summary request, I was working on creating a lite version of the application specifically for the Raspberry Pi 3B desktop environment. The user reported that the standard installation process, even with Node.js 16 compatible packages, was failing due to insufficient memory.
+
+The user's explicit request is for a single script, , that handles the entire installation without requiring on-device compilation of frontend assets. My last actions were creating the initial placeholder files for this solution:  for documentation and  for the installation script.
+
+However, the user re-iterated the request, indicating my initial creation of the files was not a complete solution. My immediate last step was acknowledging this and committing to fully implementing the lite version. The core task is to create a pre-built frontend bundle and ensure the  script correctly deploys it alongside the backend, providing a truly one-step, memory-safe installation process for the Raspberry Pi. The work is currently in the planning/initial creation phase for this lite package.
+</current_work>
+
+<optional_next_step>
+I will now create all necessary files and the pre-built frontend bundle to complete the lite version for the Raspberry Pi 3B, ensuring the  script is fully functional and handles the entire installation process as requested.
+</optional_next_step>
