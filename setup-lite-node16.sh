@@ -184,6 +184,21 @@ if [ ! -f "frontend/build/index.html" ]; then
     exit 1
 fi
 
+# Rename package.json files to prevent any Node processes from triggering
+# Frontend is 100% static, these files not needed for serving
+if [ -f "frontend/package.json" ]; then
+    mv frontend/package.json frontend/package.json.bak 2>/dev/null || true
+    log_info "Disabled package.json (not needed for static serving)"
+fi
+
+if [ -f "frontend/yarn.lock" ]; then
+    mv frontend/yarn.lock frontend/yarn.lock.bak 2>/dev/null || true
+fi
+
+if [ -f "frontend/package-lock.json" ]; then
+    mv frontend/package-lock.json frontend/package-lock.json.bak 2>/dev/null || true
+fi
+
 log_success "Frontend ready (Python HTTP server will serve it)"
 
 # ============================================
