@@ -145,31 +145,42 @@ cd frontend
 
 # Check if build exists
 if [ ! -d "build" ]; then
-    log_warning "Pre-built frontend not found"
+    log_warning "Pre-built frontend not found in frontend/build/"
     
-    # Try to download from GitHub release
-    log_info "Attempting to download pre-built frontend..."
-    
-    # You need to replace this URL with your actual GitHub release URL
-    FRONTEND_URL="https://github.com/yourusername/bakso-business/releases/latest/download/frontend-build.tar.gz"
-    
-    if wget -q --spider $FRONTEND_URL 2>/dev/null; then
-        wget -q $FRONTEND_URL -O frontend-build.tar.gz
-        tar -xzf frontend-build.tar.gz
-        rm frontend-build.tar.gz
-        log_success "Frontend downloaded and extracted"
+    # Check if tarball exists in parent directory
+    if [ -f "../frontend-build.tar.gz" ]; then
+        log_info "Found frontend-build.tar.gz, extracting..."
+        tar -xzf ../frontend-build.tar.gz
+        log_success "Frontend extracted from tarball"
     else
-        log_error "Could not download pre-built frontend!"
-        log_info "Please:"
-        log_info "1. Build frontend on your PC: npm run build"
-        log_info "2. Create archive: tar -czf frontend-build.tar.gz build/"
-        log_info "3. Copy to Pi: scp frontend-build.tar.gz pi@[PI-IP]:~/bakso-business/frontend/"
-        log_info "4. Extract: tar -xzf frontend-build.tar.gz"
-        log_info "5. Re-run this script"
+        log_error "Pre-built frontend not found!"
+        log_error "This lite version requires pre-built frontend."
+        echo ""
+        log_info "Solusi:"
+        log_info "1. Pastikan file 'frontend-build.tar.gz' ada di folder root"
+        log_info "   ATAU"
+        log_info "2. Pastikan folder 'frontend/build/' sudah ada"
+        echo ""
+        log_info "Jika belum ada, build di komputer dengan RAM cukup:"
+        log_info "  cd frontend"
+        log_info "  yarn install"
+        log_info "  yarn build"
+        log_info "  cd .."
+        log_info "  tar -czf frontend-build.tar.gz -C frontend build/"
+        echo ""
+        log_info "Kemudian copy frontend-build.tar.gz ke Raspberry Pi"
         exit 1
     fi
 else
     log_success "Frontend build found"
+fi
+
+# Create .env for frontend if not exists
+if [ ! -f .env ]; then
+    cat > .env << 'EOF'
+REACT_APP_BACKEND_URL=http://localhost:8001
+EOF
+    log_success "Frontend .env created"
 fi
 
 cd ..
