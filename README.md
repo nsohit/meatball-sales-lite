@@ -108,9 +108,37 @@ Lihat file [INSTALL.md](INSTALL.md) untuk panduan lengkap.
 
 ### Instalasi Raspberry Pi
 
-Lihat file [RASPBERRY_PI_INSTALL.md](RASPBERRY_PI_INSTALL.md) untuk panduan khusus Raspberry Pi.
+#### 🎯 Raspberry Pi 3B - Lite Version (Recommended!)
 
-### Quick Start
+**Untuk Raspberry Pi 3B dengan RAM terbatas (1GB), gunakan versi Lite:**
+
+📥 **[Download Lite Package](../../releases/latest/download/bakso-business-lite.tar.gz)** (800KB)
+
+```bash
+# 1. Copy ke Pi
+scp bakso-business-lite.tar.gz pi@[IP-PI]:~/
+
+# 2. Extract & Install
+tar -xzf bakso-business-lite.tar.gz
+cd bakso-business-lite
+bash setup-lite.sh
+
+# 3. Tunggu 10-15 menit, selesai!
+```
+
+✅ **Pre-built frontend** - Tidak perlu npm install/build!  
+✅ **Memory safe** - Hanya butuh ~400MB RAM  
+✅ **One script** - Instalasi otomatis lengkap  
+✅ **Auto start** - Jalan otomatis setelah boot  
+
+📘 Dokumentasi lengkap: [RASPBERRY_PI_3B_LITE.md](RASPBERRY_PI_3B_LITE.md)  
+🚀 Quick start: [QUICK_START_LITE.md](QUICK_START_LITE.md)
+
+#### 📦 Raspberry Pi 4 / Server
+
+Lihat file [RASPBERRY_PI_INSTALL.md](RASPBERRY_PI_INSTALL.md) untuk panduan instalasi standard.
+
+### Quick Start (Development)
 
 ```bash
 # 1. Clone repository
