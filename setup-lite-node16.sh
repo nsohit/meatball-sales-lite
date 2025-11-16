@@ -37,9 +37,17 @@ echo "  Raspberry Pi 3B Optimized"
 echo "=============================================="
 echo ""
 
-log_warning "CATATAN: Script ini untuk Pi dengan Node.js 16"
-log_info "Tidak perlu Node.js untuk versi ini - frontend sudah pre-built!"
+log_warning "CATATAN: Versi ini TIDAK BUTUH Node.js!"
+log_info "✓ Frontend sudah 100% pre-built (static files)"
+log_info "✓ Python HTTP server untuk serve frontend"
+log_info "✓ Supervisor untuk process management"
+log_info "✓ Zero dependency issues!"
 echo ""
+
+# Prevent any Node/npm/yarn processes from running
+export NODE_ENV=production
+unset npm_config_prefix
+unset npm_package_name
 
 # Check if running on Pi
 if [ ! -f /proc/device-tree/model ]; then
