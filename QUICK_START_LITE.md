@@ -27,9 +27,19 @@ cd bakso-business-lite
 
 ### ⚡ Langkah 3: Jalankan Instalasi
 
+**Pilih salah satu script:**
+
+#### Opsi A: Standard (Node.js 18) - Recommended
 ```bash
 bash setup-lite.sh
 ```
+
+#### Opsi B: Tanpa Node.js (Paling Ringan) - Untuk Pi lama
+```bash
+bash setup-lite-node16.sh
+```
+
+💡 **Jika dapat error Node.js version**, pakai Opsi B!
 
 **Tunggu 10-15 menit**, script akan otomatis:
 - ✅ Install MongoDB
