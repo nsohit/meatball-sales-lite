@@ -1533,7 +1533,7 @@ const StockManagementPage = () => {
       {!stock && !showInitialForm && (
         <Card>
           <CardContent className="py-8">
-            <p className="text-center text-muted-foreground">Tidak ada data stok untuk tanggal ini</p>
+            <p className="text-center text-muted-foreground">Tidak ada  stok untuk tanggal ini</p>
           </CardContent>
         </Card>
       )}
