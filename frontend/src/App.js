@@ -15,8 +15,10 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 const API = `${BACKEND_URL}/api`;
+
+console.log('Backend URL:', BACKEND_URL);
 
 // Format currency
 const formatCurrency = (amount) => {
