@@ -1081,11 +1081,20 @@ const StockManagementPage = () => {
       setShowRemainingForm(!response.data.stock_remaining);
       setEditMode({ initial: false, remaining: false });
     } catch (error) {
+      console.error('Fetch stock error:', error);
       if (error.response?.status === 404) {
+        // Data tidak ada untuk tanggal ini - tampilkan form input
         setStock(null);
         setShowInitialForm(true);
         setShowRemainingForm(false);
         setEditMode({ initial: false, remaining: false });
+      } else {
+        // Network error atau server error - tetap tampilkan form
+        console.warn('Network error, showing form anyway');
+        setStock(null);
+        setShowInitialForm(true);
+        setShowRemainingForm(false);
+        toast.error('Tidak bisa terhubung ke server. Silakan cek koneksi.');
       }
     }
   };
