@@ -1148,11 +1148,21 @@ const StockManagementPage = () => {
         setEditMode({ initial: false, remaining: false });
       } else {
         // Network error atau server error - tetap tampilkan form
-        console.warn('Network error, showing form anyway');
+        console.error('Network error fetching stock:', error);
         setStock(null);
         setShowInitialForm(true);
         setShowRemainingForm(false);
-        toast.error('Tidak bisa terhubung ke server. Silakan cek koneksi.');
+        
+        // Pesan error yang lebih detail
+        const errorMsg = error.message || 'Network error';
+        if (errorMsg.includes('backend') || errorMsg.includes('timeout')) {
+          toast.error('Backend tidak bisa diakses!', {
+            duration: 10000,
+            description: `${errorMsg}\n\nPeriksa:\n1. sudo supervisorctl status bakso-backend\n2. sudo supervisorctl restart bakso-backend\n3. Cek logs: sudo supervisorctl tail bakso-backend stderr`
+          });
+        } else {
+          toast.error('Tidak bisa terhubung ke server. Silakan cek koneksi.');
+        }
       }
     }
   };
