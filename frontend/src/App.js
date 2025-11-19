@@ -15,7 +15,21 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+// Untuk Raspberry Pi: gunakan hostname yang sama dengan frontend
+// Ini membuat aplikasi bisa diakses dari localhost atau IP lokal
+const getBackendURL = () => {
+  // Jika ada env variable, gunakan itu (untuk development)
+  if (process.env.REACT_APP_BACKEND_URL && process.env.REACT_APP_BACKEND_URL !== 'http://localhost:8001') {
+    return process.env.REACT_APP_BACKEND_URL;
+  }
+  
+  // Untuk production/Pi: gunakan protocol dan hostname yang sama, port 8001
+  const protocol = window.location.protocol;
+  const hostname = window.location.hostname;
+  return `${protocol}//${hostname}:8001`;
+};
+
+const BACKEND_URL = getBackendURL();
 const API = `${BACKEND_URL}/api`;
 
 console.log('Backend URL:', BACKEND_URL);
