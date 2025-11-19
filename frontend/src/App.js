@@ -1295,7 +1295,11 @@ const StockManagementPage = () => {
         <Card>
           <CardHeader>
             <CardTitle>Input Stok Sisa</CardTitle>
-            <CardDescription>Catat sisa barang yang dibawa pulang (Pangsit & Soun harus habis)</CardDescription>
+            <CardDescription>
+              Catat sisa barang yang dibawa pulang. 
+              <span className="text-green-600 font-semibold"> Sisa bakso urat, bakso kecil, tahu & somay akan otomatis ditambahkan ke stok besok.</span>
+              <span className="text-red-600 font-semibold"> Pangsit & Soun harus habis!</span>
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleRemainingSubmit} className="space-y-4">
@@ -1304,8 +1308,11 @@ const StockManagementPage = () => {
                   <div key={item.key} className="space-y-2">
                     <Label>
                       {item.label}
-                      {(item.key === 'pangsit_malang' || item.key === 'soun') && (
-                        <span className="text-xs text-red-500 ml-1">(Tidak dibawa pulang)</span>
+                      {!item.carryOver && (
+                        <span className="text-xs text-red-600 ml-1 font-semibold">(Harus habis!)</span>
+                      )}
+                      {item.carryOver && (
+                        <span className="text-xs text-green-600 ml-1">(Sisa → besok)</span>
                       )}
                     </Label>
                     <Input
@@ -1313,9 +1320,9 @@ const StockManagementPage = () => {
                       min="0"
                       value={remainingStock[item.key]}
                       onChange={(e) => setRemainingStock({ ...remainingStock, [item.key]: parseInt(e.target.value) || 0 })}
-                      placeholder="0"
+                      placeholder={!item.carryOver ? "0 (harus habis)" : "0"}
                       data-testid={`remaining-${item.key}`}
-                      disabled={item.key === 'pangsit_malang' || item.key === 'soun'}
+                      disabled={!item.carryOver}
                       required
                     />
                   </div>
