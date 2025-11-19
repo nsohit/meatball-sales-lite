@@ -34,6 +34,26 @@ const API = `${BACKEND_URL}/api`;
 
 console.log('Backend URL:', BACKEND_URL);
 
+// Configure axios dengan timeout dan retry
+axios.defaults.timeout = 10000; // 10 detik timeout
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+// Axios interceptor untuk error handling yang lebih baik
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+      console.error('Request timeout - Backend lambat atau tidak jalan');
+      return Promise.reject(new Error('Koneksi timeout. Backend mungkin lambat atau tidak jalan.'));
+    }
+    if (error.message === 'Network Error' || !error.response) {
+      console.error('Network Error - Backend tidak bisa diakses di:', BACKEND_URL);
+      return Promise.reject(new Error(`Tidak bisa terhubung ke backend di ${BACKEND_URL}. Pastikan backend service jalan.`));
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Format currency
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('id-ID', {
