@@ -1265,7 +1265,12 @@ const StockManagementPage = () => {
               <div className="grid grid-cols-2 gap-4">
                 {stockItems.map((item) => (
                   <div key={item.key} className="space-y-2">
-                    <Label>{item.label}</Label>
+                    <Label>
+                      {item.label}
+                      <span className={`text-xs ml-2 ${item.carryOver ? 'text-green-600' : 'text-orange-600'}`}>
+                        {item.info}
+                      </span>
+                    </Label>
                     <Input
                       type="number"
                       min="0"
