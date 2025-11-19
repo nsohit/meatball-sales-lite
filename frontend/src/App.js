@@ -1188,7 +1188,10 @@ const StockManagementPage = () => {
     setLoading(true);
     try {
       await axios.put(`${API}/stock/remaining/${selectedDate}`, remainingStock);
-      toast.success(editMode.remaining ? 'Stok sisa berhasil diupdate' : 'Stok sisa berhasil dicatat');
+      const message = editMode.remaining 
+        ? 'Stok sisa berhasil diupdate' 
+        : 'Stok sisa berhasil dicatat! Sisa bakso urat, bakso kecil, tahu & somay akan masuk ke stok besok otomatis.';
+      toast.success(message);
       setRemainingStock({
         bakso_urat: '',
         bakso_kecil: '',
