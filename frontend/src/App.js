@@ -1300,8 +1300,8 @@ const StockManagementPage = () => {
             <CardTitle>Input Stok Sisa</CardTitle>
             <CardDescription>
               Catat sisa barang yang dibawa pulang. 
-              <span className="text-green-600 font-semibold"> Sisa bakso urat, bakso kecil, tahu & somay akan otomatis ditambahkan ke stok besok.</span>
-              <span className="text-red-600 font-semibold"> Pangsit & Soun harus habis!</span>
+              <span className="text-green-600 font-semibold"> Sisa bakso urat, bakso kecil, tahu & somay akan otomatis masuk ke stok besok.</span>
+              <span className="text-orange-600 font-semibold"> Sisa pangsit & soun tidak dijual lagi besok (tidak carry-over).</span>
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -1312,7 +1312,7 @@ const StockManagementPage = () => {
                     <Label>
                       {item.label}
                       {!item.carryOver && (
-                        <span className="text-xs text-red-600 ml-1 font-semibold">(Harus habis!)</span>
+                        <span className="text-xs text-orange-600 ml-1">(Sisa tidak ke besok)</span>
                       )}
                       {item.carryOver && (
                         <span className="text-xs text-green-600 ml-1">(Sisa → besok)</span>
@@ -1323,9 +1323,8 @@ const StockManagementPage = () => {
                       min="0"
                       value={remainingStock[item.key]}
                       onChange={(e) => setRemainingStock({ ...remainingStock, [item.key]: parseInt(e.target.value) || 0 })}
-                      placeholder={!item.carryOver ? "0 (harus habis)" : "0"}
+                      placeholder="0"
                       data-testid={`remaining-${item.key}`}
-                      disabled={!item.carryOver}
                       required
                     />
                   </div>
