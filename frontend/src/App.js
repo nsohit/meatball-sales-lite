@@ -86,7 +86,21 @@ const Dashboard = () => {
       setSummary(response.data);
     } catch (error) {
       console.error('Error fetching summary:', error);
-      toast.error('Gagal memuat ringkasan harian');
+      
+      // Pesan error yang lebih jelas berdasarkan tipe error
+      if (error.message && error.message.includes('backend')) {
+        toast.error(error.message, {
+          duration: 8000,
+          description: 'Cek: sudo supervisorctl status bakso-backend'
+        });
+      } else if (error.message && error.message.includes('timeout')) {
+        toast.error('Koneksi timeout. Backend lambat atau tidak jalan.', {
+          duration: 6000,
+          description: 'Tunggu 1-2 menit atau restart: sudo supervisorctl restart all'
+        });
+      } else {
+        toast.error('Gagal memuat ringkasan harian. Cek koneksi backend.');
+      }
     } finally {
       setLoading(false);
     }
