@@ -1164,7 +1164,7 @@ const StockManagementPage = () => {
           date: selectedDate,
           ...initialStock
         });
-        toast.success('Stok awal berhasil dicatat');
+        toast.success('Stok awal berhasil dicatat. Stok kemarin (jika ada) sudah ditambahkan otomatis!');
       }
       setInitialStock({
         bakso_urat: '',
