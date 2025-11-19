@@ -107,7 +107,17 @@ const Dashboard = () => {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center h-screen">Memuat...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen space-y-4">
+        <div className="text-xl">Memuat data...</div>
+        <div className="text-sm text-muted-foreground">Menghubungi backend: {BACKEND_URL}</div>
+        <div className="text-xs text-muted-foreground max-w-md text-center">
+          Jika loading lebih dari 10 detik, backend mungkin belum jalan.
+          <br />
+          Cek status: <code className="bg-gray-200 px-1 rounded">sudo supervisorctl status</code>
+        </div>
+      </div>
+    );
   }
 
   return (
