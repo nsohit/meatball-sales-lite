@@ -535,14 +535,30 @@ async def create_initial_stock(stock: DailyStockCreate):
     if existing:
         raise HTTPException(status_code=400, detail="Stok untuk tanggal ini sudah ada")
     
-    stock_brought = StockItem(
-        bakso_urat=stock.bakso_urat,
-        bakso_kecil=stock.bakso_kecil,
-        tahu=stock.tahu,
-        somay=stock.somay,
-        pangsit_malang=stock.pangsit_malang,
-        soun=stock.soun
-    )
+    # Check yesterday's remaining stock for carry-over items
+    from datetime import datetime, timedelta
+    today = datetime.fromisoformat(stock.date)
+    yesterday = (today - timedelta(days=1)).date().isoformat()
+    yesterday_stock = await db.daily_stocks.find_one({"date": yesterday}, {"_id": 0})
+    
+    # Initialize stock values with input
+    stock_values = {
+        'bakso_urat': stock.bakso_urat,
+        'bakso_kecil': stock.bakso_kecil,
+        'tahu': stock.tahu,
+        'somay': stock.somay,
+        'pangsit_malang': stock.pangsit_malang,
+        'soun': stock.soun
+    }
+    
+    # Add carry-over from yesterday's remaining stock
+    if yesterday_stock and yesterday_stock.get('stock_remaining'):
+        yesterday_remaining = yesterday_stock['stock_remaining']
+        for item in CARRY_OVER_ITEMS:
+            if item in yesterday_remaining:
+                stock_values[item] += yesterday_remaining[item]
+    
+    stock_brought = StockItem(**stock_values)
     
     stock_obj = DailyStock(
         date=stock.date,
