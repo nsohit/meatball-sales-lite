@@ -133,6 +133,10 @@ class MonthlySummary(BaseModel):
     days_count: int
     daily_summaries: List[DailySummary]
 
+# Define which items carry over to next day
+CARRY_OVER_ITEMS = ['bakso_urat', 'bakso_kecil', 'tahu', 'somay']
+NON_CARRY_OVER_ITEMS = ['pangsit_malang', 'soun']
+
 class StockItem(BaseModel):
     bakso_urat: int = 0
     bakso_kecil: int = 0
