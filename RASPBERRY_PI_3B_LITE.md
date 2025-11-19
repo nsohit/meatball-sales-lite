@@ -15,6 +15,16 @@
 - ✅ Tidak perlu npm install frontend
 - ✅ Setup otomatis dengan **1 script**
 
+## 🌐 **APLIKASI 100% LOKAL - TIDAK PERLU INTERNET!**
+
+✅ **Setelah instalasi selesai, aplikasi berjalan OFFLINE di Raspberry Pi**
+- Tidak perlu koneksi internet untuk menggunakan aplikasi
+- Bisa diakses dari Pi sendiri: `http://localhost:3000`
+- Bisa diakses dari HP/komputer lain (WiFi sama): `http://[IP-Pi]:3000`
+- Semua data tersimpan lokal di MongoDB
+
+📖 **Lihat:** `AKSES_LOKAL_TANPA_INTERNET.md` untuk panduan lengkap akses aplikasi
+
 ---
 
 ## 📦 Yang Dibutuhkan
@@ -22,13 +32,13 @@
 ### Hardware
 - Raspberry Pi 3B/3B+ dengan Raspberry Pi OS Desktop
 - MicroSD 16GB+
-- Internet connection
+- Internet connection **hanya untuk instalasi awal**
 - **TIDAK BUTUH**: Heatsink, fan (karena tidak ada build!)
 
 ### Software
 - Raspberry Pi OS Desktop (32-bit)
 - **TIDAK BUTUH**: Node.js untuk frontend!
-- Hanya butuh: Python 3, MongoDB, serve
+- Hanya butuh: Python 3, MongoDB, Python HTTP server
 
 ---
 
