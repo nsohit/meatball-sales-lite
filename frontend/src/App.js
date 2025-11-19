@@ -1224,12 +1224,12 @@ const StockManagementPage = () => {
   };
 
   const stockItems = [
-    { key: 'bakso_urat', label: 'Bakso Urat' },
-    { key: 'bakso_kecil', label: 'Bakso Kecil' },
-    { key: 'tahu', label: 'Tahu' },
-    { key: 'somay', label: 'Somay' },
-    { key: 'pangsit_malang', label: 'Pangsit Malang' },
-    { key: 'soun', label: 'Soun' }
+    { key: 'bakso_urat', label: 'Bakso Urat', carryOver: true, info: '(Dijual lagi besok)' },
+    { key: 'bakso_kecil', label: 'Bakso Kecil', carryOver: true, info: '(Dijual lagi besok)' },
+    { key: 'tahu', label: 'Tahu', carryOver: true, info: '(Dijual lagi besok)' },
+    { key: 'somay', label: 'Somay', carryOver: true, info: '(Dijual lagi besok)' },
+    { key: 'pangsit_malang', label: 'Pangsit Malang', carryOver: false, info: '(Harus habis - Tidak dijual lagi)' },
+    { key: 'soun', label: 'Soun', carryOver: false, info: '(Harus habis - Tidak dijual lagi)' }
   ];
 
   return (
