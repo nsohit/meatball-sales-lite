@@ -17,25 +17,37 @@ import { id as localeId } from 'date-fns/locale';
 
 // Smart backend URL detection untuk development (Emergent) dan production (Raspberry Pi)
 const getBackendURL = () => {
+  const currentHostname = window.location.hostname;
   const envUrl = process.env.REACT_APP_BACKEND_URL;
   
-  // Jika env variable ada dan bukan localhost (development/Emergent environment)
-  if (envUrl && 
-      envUrl !== 'http://localhost:8001' && 
-      !envUrl.includes('localhost') && 
-      !envUrl.includes('127.0.0.1')) {
-    // Development/preview environment - gunakan URL yang di-set
-    console.log('Using configured backend URL (development)');
+  // PRODUCTION/PI DETECTION:
+  // Jika hostname adalah localhost atau IP lokal (bukan domain preview Emergent)
+  const isLocalEnvironment = 
+    currentHostname === 'localhost' || 
+    currentHostname === '127.0.0.1' ||
+    /^192\.168\.\d{1,3}\.\d{1,3}$/.test(currentHostname) || // 192.168.x.x
+    /^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(currentHostname) || // 10.x.x.x
+    /^172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3}$/.test(currentHostname); // 172.16.x.x - 172.31.x.x
+  
+  if (isLocalEnvironment) {
+    // PRODUCTION/PI: Gunakan hostname dinamis
+    const protocol = window.location.protocol;
+    const dynamicUrl = `${protocol}//${currentHostname}:8001`;
+    console.log('✓ Production/Pi mode - Backend URL:', dynamicUrl);
+    return dynamicUrl;
+  }
+  
+  // DEVELOPMENT/PREVIEW: Gunakan env variable jika ada
+  if (envUrl) {
+    console.log('✓ Development mode - Backend URL:', envUrl);
     return envUrl;
   }
   
-  // Production/Pi: gunakan hostname dinamis untuk support akses dari IP lokal
+  // FALLBACK: Gunakan dynamic hostname
   const protocol = window.location.protocol;
-  const hostname = window.location.hostname;
-  const dynamicUrl = `${protocol}//${hostname}:8001`;
-  
-  console.log('Using dynamic backend URL (production/Pi)');
-  return dynamicUrl;
+  const fallbackUrl = `${protocol}//${currentHostname}:8001`;
+  console.warn('⚠ Fallback mode - Backend URL:', fallbackUrl);
+  return fallbackUrl;
 };
 
 const BACKEND_URL = getBackendURL();
