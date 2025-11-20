@@ -18,13 +18,44 @@ from io import BytesIO
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+# Validate environment variables
+try:
+    mongo_url = os.environ.get('MONGO_URL')
+    db_name = os.environ.get('DB_NAME')
+    
+    if not mongo_url:
+        logger.error("MONGO_URL environment variable not set!")
+        raise ValueError("MONGO_URL is required")
+    
+    if not db_name:
+        logger.error("DB_NAME environment variable not set!")
+        raise ValueError("DB_NAME is required")
+    
+    logger.info(f"Connecting to MongoDB: {mongo_url}")
+    logger.info(f"Database name: {db_name}")
+    
+except Exception as e:
+    logger.error(f"Environment variable error: {e}")
+    raise
+
+# MongoDB connection with error handling
+try:
+    client = AsyncIOMotorClient(mongo_url, serverSelectionTimeoutMS=5000)
+    db = client[db_name]
+    logger.info("MongoDB client created successfully")
+except Exception as e:
+    logger.error(f"Failed to create MongoDB client: {e}")
+    raise
 
 # Create the main app without a prefix
-app = FastAPI()
+app = FastAPI(title="Bakso Business API", version="1.0.0")
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
