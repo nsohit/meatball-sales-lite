@@ -21,8 +21,8 @@ if [ ! -f "setup-lite.sh" ] || [ ! -d "backend" ] || [ ! -d "frontend" ]; then
     exit 1
 fi
 
-# Step 1: Build frontend
-echo -e "${BLUE}[1/4]${NC} Building frontend..."
+# Step 1: Build frontend untuk Raspberry Pi
+echo -e "${BLUE}[1/4]${NC} Building frontend for Raspberry Pi..."
 cd frontend
 
 if [ ! -d "node_modules" ]; then
@@ -30,8 +30,29 @@ if [ ! -d "node_modules" ]; then
     yarn install
 fi
 
-echo "Building production bundle..."
+# Backup .env original
+if [ -f .env ]; then
+    cp .env .env.backup
+fi
+
+# Create .env.production khusus untuk Pi (force localhost untuk trigger dynamic detection)
+echo "Creating .env.production for Raspberry Pi..."
+cat > .env.production << EOF
+# Production build untuk Raspberry Pi
+# URL ini akan di-override oleh dynamic detection di runtime
+REACT_APP_BACKEND_URL=http://localhost:8001
+WDS_SOCKET_PORT=443
+REACT_APP_ENABLE_VISUAL_EDITS=false
+ENABLE_HEALTH_CHECK=false
+EOF
+
+echo "Building production bundle (with Pi-specific config)..."
 yarn build
+
+# Restore .env original
+if [ -f .env.backup ]; then
+    mv .env.backup .env
+fi
 
 cd ..
 echo -e "${GREEN}✓${NC} Frontend build complete"
