@@ -249,7 +249,7 @@ EOF
 log_success "Service configurations created"
 
 # ============================================
-# Step 8: Start Services
+# Step 8: Start Services (with health checks)
 # ============================================
 log_info "Step 8/8: Starting services..."
 
@@ -257,10 +257,40 @@ log_info "Step 8/8: Starting services..."
 sudo supervisorctl reread > /dev/null 2>&1
 sudo supervisorctl update > /dev/null 2>&1
 
-# Start services
-sudo supervisorctl start bakso-backend > /dev/null 2>&1
-sudo supervisorctl start bakso-frontend > /dev/null 2>&1
+# Wait for MongoDB to be ready
+log_info "Waiting for MongoDB to be ready..."
+for i in {1..10}; do
+    if mongo --eval "db.version()" > /dev/null 2>&1; then
+        log_success "MongoDB is ready"
+        break
+    fi
+    if [ $i -eq 10 ]; then
+        log_warning "MongoDB not responding, continuing anyway..."
+    fi
+    sleep 2
+done
 
+# Start backend first (higher priority)
+log_info "Starting backend service..."
+sudo supervisorctl start bakso-backend > /dev/null 2>&1
+sleep 5
+
+# Wait for backend to be healthy
+log_info "Waiting for backend to be ready..."
+for i in {1..15}; do
+    if curl -s http://localhost:8001/api/ | grep -q "Bakso Business" 2>/dev/null; then
+        log_success "Backend is ready and responding"
+        break
+    fi
+    if [ $i -eq 15 ]; then
+        log_warning "Backend not responding yet, check logs if needed"
+    fi
+    sleep 2
+done
+
+# Start frontend
+log_info "Starting frontend service..."
+sudo supervisorctl start bakso-frontend > /dev/null 2>&1
 sleep 3
 
 log_success "Services started"
