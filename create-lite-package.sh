@@ -81,6 +81,8 @@ cp frontend-build.tar.gz $TEMP_DIR/
 cp README.md $TEMP_DIR/ 2>/dev/null || true
 cp RASPBERRY_PI_3B_LITE.md $TEMP_DIR/README.md
 cp FIX_SERING_TIDAK_KONEK.md $TEMP_DIR/README_PENTING.md 2>/dev/null || true
+cp CARA_AKSES_YANG_BENAR.md $TEMP_DIR/ 2>/dev/null || true
+cp check-status.sh $TEMP_DIR/ 2>/dev/null || true
 cp AKSES_LOKAL_TANPA_INTERNET.md $TEMP_DIR/ 2>/dev/null || true
 cp FIX_BACKEND_NOT_ACCESSIBLE.md $TEMP_DIR/ 2>/dev/null || true
 cp TROUBLESHOOTING_NODE_ERROR.md $TEMP_DIR/ 2>/dev/null || true
