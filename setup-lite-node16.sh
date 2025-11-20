@@ -213,17 +213,21 @@ log_success "Supervisor installed"
 # ============================================
 log_info "Step 7/8: Creating service configurations..."
 
-# Backend config
+# Backend config (Optimized untuk Raspberry Pi 3B)
 sudo tee /etc/supervisor/conf.d/bakso-backend.conf > /dev/null << EOF
 [program:bakso-backend]
 directory=$(pwd)/backend
-command=$(pwd)/backend/venv/bin/uvicorn server:app --host 0.0.0.0 --port 8001 --workers 1
+command=$(pwd)/backend/venv/bin/uvicorn server:app --host 0.0.0.0 --port 8001 --workers 1 --timeout-keep-alive 30
 user=$USER
 autostart=true
 autorestart=true
+startsecs=10
+startretries=3
+stopwaitsecs=10
 stderr_logfile=/var/log/supervisor/bakso-backend.err.log
 stdout_logfile=/var/log/supervisor/bakso-backend.out.log
 environment=MONGO_URL="mongodb://localhost:27017",DB_NAME="bakso_business",CORS_ORIGINS="*"
+priority=100
 EOF
 
 # Frontend config (using Python HTTP server - no Node needed!)
@@ -234,8 +238,12 @@ command=python3 -m http.server 3000
 user=$USER
 autostart=true
 autorestart=true
+startsecs=5
+startretries=3
+stopwaitsecs=5
 stderr_logfile=/var/log/supervisor/bakso-frontend.err.log
 stdout_logfile=/var/log/supervisor/bakso-frontend.out.log
+priority=200
 EOF
 
 log_success "Service configurations created"
