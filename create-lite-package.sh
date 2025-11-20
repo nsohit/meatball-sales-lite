@@ -94,6 +94,7 @@ cp FIX_FORM_TIDAK_MUNCUL.md $TEMP_DIR/ 2>/dev/null || true
 mkdir -p $TEMP_DIR/backend
 cp backend/server.py $TEMP_DIR/backend/
 cp backend/requirements.txt $TEMP_DIR/backend/
+cp start-backend.sh $TEMP_DIR/ 2>/dev/null || true
 
 # Create frontend directory structure (empty, will be populated by script)
 mkdir -p $TEMP_DIR/frontend
