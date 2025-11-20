@@ -23,8 +23,20 @@ log_warning() {
     echo -e "${YELLOW}[WARNING]${NC} $1"
 }
 
-# Get backend directory
-BACKEND_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Get script directory (should be backend directory)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# If script is in backend folder, use current dir
+# If script is in parent folder, go to backend
+if [ -f "$SCRIPT_DIR/server.py" ]; then
+    BACKEND_DIR="$SCRIPT_DIR"
+elif [ -f "$SCRIPT_DIR/backend/server.py" ]; then
+    BACKEND_DIR="$SCRIPT_DIR/backend"
+else
+    echo "Error: Cannot find backend directory!"
+    exit 1
+fi
+
 cd "$BACKEND_DIR"
 
 echo "========================================"
