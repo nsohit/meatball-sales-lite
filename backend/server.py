@@ -57,6 +57,23 @@ except Exception as e:
 # Create the main app without a prefix
 app = FastAPI(title="Bakso Business API", version="1.0.0")
 
+# Startup event to verify MongoDB connection
+@app.on_event("startup")
+async def startup_event():
+    try:
+        # Test MongoDB connection
+        await db.command('ping')
+        logger.info("✓ MongoDB connection successful!")
+        
+        # Log available collections
+        collections = await db.list_collection_names()
+        logger.info(f"Available collections: {collections}")
+        
+    except Exception as e:
+        logger.error(f"✗ MongoDB connection failed: {e}")
+        logger.error("Backend will start but database operations will fail!")
+        # Don't raise - let the app start anyway
+
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
